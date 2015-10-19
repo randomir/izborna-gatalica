@@ -53,11 +53,16 @@ var partyScores = [
     [1, 5, 3, 4, 1, 4, 3],
     [4, 2, 5, 5, 2, 4, 2]
 ];
+var neutralScores = new Array(partyScores[0].length+1).join("3").split('').map(parseFloat);
 
-function renderQuestions($target) {
+function renderQuestions($target, answers) {
     var tpl = $("#template-question").html();
     for (var id = 0; id < questionTexts.length; id++) {
-        var html = Mustache.render(tpl, {text: questionTexts[id], id: "question-"+id});
+        var html = Mustache.render(tpl, {
+            text: questionTexts[id],
+            id: "question-"+id,
+            val: answers && answers[id]
+        });
         $target.append($(html));
     }
     $('.answer-slider').slider({
@@ -103,27 +108,27 @@ function norm(a) {
 function angle(a, b) {
     var cos = dot(a, b) / norm(a) / norm(b);
     if (isNaN(cos)) cos = 0;
+    cos = Math.max(-1, Math.min(cos, 1));
     return Math.acos(cos);
 }
 
 function add(a, b) {
     if (a.length != b.length) return;
-    for (var i = 0, res = a.slice(); i < a.length; i++) {
+    for (var i = 0, res = a.slice(); i < res.length; i++) {
         res[i] += b[i];
     }
     return res;
 }
 
 function scale(n, a) {
-    for (var i = 0; i < a.length; i++) {
-        a[i] *= n;
+    for (var i = 0, res = a.slice(); i < res.length; i++) {
+        res[i] *= n;
     }
-    return a;
+    return res;
 }
 
 function normalized(a) {
-    var mid = new Array(a.length+1).join("3").split('').map(parseFloat);
-    return add(a, scale(-1, mid));
+    return add(a, scale(-1, neutralScores));
 }
 
 function match(a, b) {
@@ -147,7 +152,7 @@ function updatePartyMatches(userScores) {
 }
 
 $(function() {
-    renderQuestions($("#questions"));
+    renderQuestions($("#questions"), neutralScores);
     renderParties($("#results"));
     $(".answer-slider").trigger('change');
 });
