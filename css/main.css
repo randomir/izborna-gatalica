@@ -33,7 +33,8 @@ body {
     .party-match {
         margin: 10px 0;
     }
-        .party-name {
-            /*font-weight: bold;*/
+        .party-name {}
+        .party-score-link {
+            color: inherit;
         }
         .party-score {}

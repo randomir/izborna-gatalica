@@ -56,6 +56,7 @@ var partyScores = [
 var neutralScores = new Array(partyScores[0].length+1).join("3").split('').map(parseFloat);
 
 function renderQuestions($target, answers) {
+    $target.empty();
     var tpl = $("#template-question").html();
     for (var id = 0; id < questionTexts.length; id++) {
         var html = Mustache.render(tpl, {
@@ -85,7 +86,11 @@ function renderQuestions($target, answers) {
 function renderParties($target) {
     var tpl = $("#template-party-match").html();
     for (var id = 0; id < partyNames.length; id++) {
-        var html = Mustache.render(tpl, {name: partyNames[id], id: "party-"+id, match: 0});
+        var html = Mustache.render(tpl, {
+            name: partyNames[id],
+            id: id,
+            match: 0
+        });
         $target.append($(html));
     }
 }
@@ -155,4 +160,11 @@ $(function() {
     renderQuestions($("#questions"), neutralScores);
     renderParties($("#results"));
     $(".answer-slider").trigger('change');
+    $(".party-score-link").on('click', function() {
+        var id = $(this).data('party-id');
+        var scores = partyScores[id];
+        renderQuestions($("#questions"), scores);
+        updatePartyMatches(scores);
+    });
 });
+
