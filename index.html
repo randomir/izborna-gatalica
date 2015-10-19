@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="hr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Stranacki profiler: saznaj za koga zelis glasati.">
+    <meta name="author" content="Radomir Stevanovic">
+    <title>IG-2015: Izborna Gatalica</title>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-slider.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+<!--            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+-->          </ul>
+        </nav>
+        <h1>Izborna Gatalica IG-2015</h1>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
+          <div id="questions"></div>
+        </div>
+        
+        <div class="col-md-6">
+          <h4>Vaše mišljenje koincidira sa stavovima stranaka:</h4>
+          <div id="results"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="container">
+        <p class="text-muted">
+          Sklepao @<a href="http://github.com/randomir/">randomir</a>.
+          Podaci preuzeti sa portala <a href="http://barometar.vecernji.hr/topics/slug/ja-biram-sto-je-kljuc-uspjesne-reforme-javne-uprav/">barometar.hr</a>.
+        </p>
+      </div>
+    </div>
+    
+    <script id="template-question" type="x-tmpl-mustache">
+      <div class="question">
+        <h5>{{text}}</h5>
+        <input class="answer-slider" type="text" data-slider-id="{{id}}" data-slider-min="1" data-slider-max="5" data-slider-value="3"/>
+      </div>
+    </script>
+    <script id="template-party-match" type="x-tmpl-mustache">
+      <div class="party-match">
+        <div class="row">
+          <div class="col-md-2">
+            <span class="party-name">{{name}}</span>
+          </div>
+          <div class="col-md-10">
+            <div class="progress">
+              <div class="progress-bar party-score" role="progressbar" aria-valuenow="{{match}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+                {{match}}%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+    
+    <script src="lib/jquery-2.1.1.min.js"></script>
+    <script src="lib/mustache-0.8.2.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="lib/bootstrap-slider.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
