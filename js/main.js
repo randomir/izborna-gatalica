@@ -87,16 +87,14 @@ function renderParties($target) {
 
 function dot(a, b) {
     if (a.length != b.length) return;
-    var res = 0;
-    for (var i = 0; i < a.length; i++) {
+    for (var i = 0, res = 0; i < a.length; i++) {
         res += a[i] * b[i];
     }
     return res;
 }
 
 function norm(a) {
-    var sum = 0;
-    for (var i = 0; i < a.length; i++) {
+    for (var i = 0, sum = 0; i < a.length; i++) {
         sum += a[i] * a[i];
     }
     return Math.sqrt(sum);
@@ -104,11 +102,32 @@ function norm(a) {
 
 function angle(a, b) {
     var cos = dot(a, b) / norm(a) / norm(b);
+    if (isNaN(cos)) cos = 0;
     return Math.acos(cos);
 }
 
+function add(a, b) {
+    if (a.length != b.length) return;
+    for (var i = 0, res = a.slice(); i < a.length; i++) {
+        res[i] += b[i];
+    }
+    return res;
+}
+
+function scale(n, a) {
+    for (var i = 0; i < a.length; i++) {
+        a[i] *= n;
+    }
+    return a;
+}
+
+function normalized(a) {
+    var mid = new Array(a.length+1).join("3").split('').map(parseFloat);
+    return add(a, scale(-1, mid));
+}
+
 function match(a, b) {
-    return 100 * (1 - angle(a, b) / Math.PI);
+    return 100 * (1 - angle(normalized(a), normalized(b)) / Math.PI);
 }
 
 function calcPartyMatches(userScores) {
