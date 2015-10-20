@@ -150,8 +150,9 @@ function calcPartyMatches(userScores) {
 
 function updatePartyMatches(userScores) {
     var matches = calcPartyMatches(userScores);
-    $(".party-score").each(function(idx) {
-        var elem = $(this), val = Math.round(matches[idx]), percent = val+'%';
+    $(".party-score").each(function() {
+        var elem = $(this), id = elem.data('party-id'),
+            val = Math.round(matches[id]), percent = val+'%';
         elem.data('aria-valuenow', val).css({width: percent}).text(percent);
     });
 }
