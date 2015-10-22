@@ -15,7 +15,8 @@ function renderQuestions($target, answers) {
     $('.answer-slider').slider({
         formatter: function(value) {
             return answerDesc[value];
-        }
+        },
+        reversed: true
     });
     $(".answer-slider").on('change', function(e) {
         updatePartyMatches(getUserScores());
