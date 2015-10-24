@@ -3,14 +3,23 @@
 
 function renderQuestions($target, answers) {
     $target.empty();
-    var tpl = $("#template-question").html();
-    for (var id = 0; id < questionTexts.length; id++) {
-        var html = Mustache.render(tpl, {
-            text: questionTexts[id],
-            id: "question-"+id,
-            val: answers && answers[id]
-        });
-        $target.append($(html));
+    var tplSection = $("#template-section").html();
+    var tplQuestion = $("#template-question").html();
+    for (var sectionId = 0, questionId = 0; sectionId < questions.length; sectionId++) {
+        var sectionQuestions = questions[sectionId];
+        
+        $target.append($(Mustache.render(tplSection, {
+            text: sectionQuestions.sectionTitle
+        })));
+        
+        for (var id = 0; id < sectionQuestions.texts.length; id++, questionId++) {
+            var html = Mustache.render(tplQuestion, {
+                text: sectionQuestions.texts[id],
+                id: "question-" + questionId,
+                val: answers && answers[questionId]
+            });
+            $target.append($(html));
+        }
     }
     $('.answer-slider').slider({
         formatter: function(value) {
