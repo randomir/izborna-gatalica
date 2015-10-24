@@ -93,7 +93,19 @@ function orderPartiesById() {
 $(function() {
     renderQuestions($("#questions"), neutralScores);
     renderParties($("#results"));
-    $(".answer-slider").trigger('change');
+    $(".answer-slider:first").trigger('change');
+    
+    var updateResultsPaneWidth = function() {
+        $("#results-pane").css({width: $("#questions-pane").width()});
+    };
+    $("#results-pane").affix({
+        offset: {
+            top: $(".page-header").outerHeight(true) - 20,
+            bottom: $(".footer").outerHeight(true)
+        }
+    }).on('affixed.bs.affix', updateResultsPaneWidth);
+    $(window).on('resize', updateResultsPaneWidth);
+    
     $(".party-score-link").on('click', function() {
         var id = $(this).data('party-id');
         var scores = partyScores[id];
