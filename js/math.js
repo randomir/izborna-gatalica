@@ -35,10 +35,30 @@ function scale(n, a) {
     return res;
 }
 
+function vector(n, val) {
+    val = val || 0;
+    var v = Array(n);
+    for (var i = 0; i < n; i++) v[i] = val;
+    return v;
+}
+
 function normalized(a) {
     return add(a, scale(-1, neutralScores));
 }
 
 function angleAsPercent(a, b) {
     return 100 * (1 - angle(normalized(a), normalized(b)) / Math.PI);
+}
+
+// lower-triangular matrix of simalirity scores between parties
+function similarityMatrix(vectors) {
+    var n = vectors.length, similarity = [];
+    for (var i = 0; i < n; i++) {
+        var row = vector(n, 0);
+        for (var j = 0; j <= i; j++) {
+            row[j] = angleAsPercent(vectors[i], vectors[j]);
+        }
+        similarity.push(row);
+    }
+    return similarity;
 }

@@ -68,7 +68,6 @@ var partyNames = [
 ];
 
 // 1 – snažno podržavam; 2 – djelomično podržavam; 3 – neutralan sam; 4 – djelomično se protivim; 5 – snažno se protivim; 6 – nemam mišljenje
-
 var partyScores = [
     /* tema 1               tema 2.1   tema 2.2      tema 2.3     tema 2.4   tema 2.5 */
     [2, 5, 5, 5, 1, 5, 1,   5, 5, 1,   5, 5, 5, 5,   5, 5, 5,     1, 1,      5],
