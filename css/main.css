@@ -56,3 +56,10 @@ body {
             color: inherit;
         }
         .party-score {}
+
+#similarity-graph {
+    padding-top: 1em;
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ccc;
+}

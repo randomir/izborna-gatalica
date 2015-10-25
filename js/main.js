@@ -90,6 +90,42 @@ function orderPartiesById() {
     }
 }
 
+function drawSimilarityGraph() {
+    var nodes = [];
+    var edges = [];
+    var n = partyNames.length;
+    var sim = similarityMatrix(partyScores);
+    var network = null;
+    
+    for (var i = 0; i < n; i++) {
+        nodes.push({id: i, value: 1, label: partyNames[i]});
+    }
+    
+    var scaled = function(x) {
+        return Math.exp(x/100 - 0.5) / Math.exp(0.5);
+    };
+    for (var i = 1; i < n; i++) {
+        for (var j = 0; j < i; j++) {
+            var xs = scaled(sim[i][j]);
+            if (xs > 0.7) {
+                edges.push({from: i, to: j, value: xs, title: sim[i][j].toFixed(2)+"%"});
+            }
+        }
+    }
+    
+    var container = $("#similarity-graph")[0];
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {
+        nodes: {
+            shape: 'dot',
+        }
+    };
+    network = new vis.Network(container, data, options);
+}
+
 $(function() {
     renderQuestions($("#questions"), neutralScores);
     renderParties($("#results"));
@@ -100,8 +136,8 @@ $(function() {
     };
     $("#results-pane").affix({
         offset: {
-            top: $(".page-header").outerHeight(true) - 20,
-            bottom: $(".footer").outerHeight(true)
+            top: $(".page-header:first").outerHeight(true) - 20,
+            bottom: $(document).height() - $("#similarity-section").offset().top
         }
     }).on('affixed.bs.affix', updateResultsPaneWidth);
     $(window).on('resize', updateResultsPaneWidth);
@@ -122,4 +158,6 @@ $(function() {
             updatePartyMatches(getUserScores());
         }
     });
+    
+    drawSimilarityGraph();
 });
