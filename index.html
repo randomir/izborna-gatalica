@@ -37,13 +37,15 @@
 
       <div class="page-header" id="similarity-section">
         <h2>Tko je kome sličan...</h2>
-        <div class="row">
-          <div class="col-md-12">
-            <div id="similarity-graph"></div>
-          </div>
-        </div>
       </div>
       
+      <div class="row">
+        <div class="col-md-12">
+          <p>Uključene sekcija pitanja:</p>
+          <div class="btn-group" data-toggle="buttons" id="similarity-toggles"></div>
+          <div id="similarity-graph"></div>
+        </div>
+      </div>
     </div>
     
     <div class="footer">
@@ -81,6 +83,11 @@
           </div>
         </div>
       </div>
+    </script>
+    <script id="template-similarity-toggle" type="x-tmpl-mustache">
+      <label class="btn btn-xs btn-success active">
+        <input type="checkbox" autocomplete="off" data-section-id="{{sectionId}}" checked><span class="glyphicon glyphicon-tag"></span> {{title}}
+      </label>
     </script>
     
     <script src="lib/jquery-2.1.1.min.js"></script>

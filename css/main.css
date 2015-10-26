@@ -63,3 +63,7 @@ body {
     height: 600px;
     border: 1px solid #ccc;
 }
+
+#similarity-toggles {
+    margin-bottom: 1em;
+}

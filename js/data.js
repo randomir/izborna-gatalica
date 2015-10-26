@@ -8,6 +8,7 @@ var answerDesc = {
 
 var questions = [{
     sectionTitle: "Reforma javne uprave i lokalne samouprave",
+    shortTitle: "Javna uprava i samouprava",
     texts: [
         "Sadašnji je broj županija optimalan i odgovora političkim, ekonomskim i društvenim potrebama zemlje.",
         "Porezni prihodi lokalnih jedinica odgovaraju njihovoj zakonskoj ulozi i potrebama.",
@@ -19,6 +20,7 @@ var questions = [{
     ]
 }, {
     sectionTitle: "Javna poduzeća",
+    shortTitle: "Javna poduzeća",
     texts: [
             "Republika Hrvatska treba potpuno privatizirati udjele koje ima u više od 500 tvrtki koje nisu od strateške važnosti.",
             "Potrebno je privatizirati udjele koje Republika Hrvatska ima u svim trgovačkim društvima, čak i onima koja su trenutačno proglašena strateškim.",
@@ -26,6 +28,7 @@ var questions = [{
     ]
 }, {
     sectionTitle: "Javni dug",
+    shortTitle: "Javni dug",
     texts: [
             "Hrvatska nema velik broj zaposlenih u javnom sektoru.",
             "Veličinu proračunskog deficita treba i zakonski ograničiti kako bi se onemogućilo neodgovorno financijsko ponašanje Vlade RH.",
@@ -34,6 +37,7 @@ var questions = [{
     ]
 }, {
     sectionTitle: "Zdravstvo",
+    shortTitle: "Zdravstvo",
     texts: [
         "Uvođenje privatnog sektora u zdravstvo povećat će efikasnost sustava i smanjiti trošak njegova financiranja iz javnih izvora.",
         "Imunološki zavod država je trebala privatizirati ili bar pred privatne investitore postaviti iste uvjete po kojima je ona sama poslije postupila.",
@@ -41,16 +45,27 @@ var questions = [{
     ]
 }, {
     sectionTitle: "Nezaposlenost mladih i poticanje poduzetništva",
+    shortTitle: "Nezaposlenost mladih",
     texts: [
         "Hrvatska narodna banka treba imati aktivniju ulogu u razvoju hrvatskoga gospodarstva.",
         "Financijsko obrazovanje i kultura poduzetništva treba ući u obvezni obrazovni program.",
     ]
 }, {
     sectionTitle: "Porezna reforma",
+    shortTitle: "Porezna reforma",
     texts: [
         "Porez na nekretnine pravedan je i poželjan porez."
     ]
 }];
+
+(function _updateQuestionsMeta(questions) {
+    for (var sectionId = 0, offset = 0; sectionId < questions.length; sectionId++) {
+        var section = questions[sectionId];
+        section.count = section.texts.length;
+        section.offset = offset;
+        offset += section.count;
+    }
+})(questions);
     
 var partyNames = [
     "Živi zid",
@@ -67,7 +82,6 @@ var partyNames = [
     "SDP"
 ];
 
-// 1 – snažno podržavam; 2 – djelomično podržavam; 3 – neutralan sam; 4 – djelomično se protivim; 5 – snažno se protivim; 6 – nemam mišljenje
 var partyScores = [
     /* tema 1               tema 2.1   tema 2.2      tema 2.3     tema 2.4   tema 2.5 */
     [2, 5, 5, 5, 1, 5, 1,   5, 5, 1,   5, 5, 5, 5,   5, 5, 5,     1, 1,      5],

@@ -44,6 +44,17 @@ function renderParties($target) {
     }
 }
 
+function renderSimilarityToggles($target) {
+    var tpl = $("#template-similarity-toggle").html();
+    for (var sectionId = 0; sectionId < questions.length; sectionId++) {
+        var section = questions[sectionId];
+        $target.append($(Mustache.render(tpl, {
+            title: section.shortTitle,
+            sectionId: sectionId
+        })));
+    }
+}
+
 function calcPartyMatches(userScores) {
     var matches = [];
     for (var i = 0; i < partyScores.length; i++) {
@@ -90,11 +101,24 @@ function orderPartiesById() {
     }
 }
 
-function drawSimilarityGraph() {
+function sliceScoresBySection(sections) {
+    var slicedScores = [];
+    for (var i = 0; i < partyScores.length; i++) {
+        var scores = [];
+        for (var j = 0; j < sections.length; j++) {
+            var sectionId = sections[j], section = questions[sectionId];
+            scores = scores.concat(partyScores[i].slice(section.offset, section.offset+section.count));
+        }
+        slicedScores.push(scores);
+    }
+    return slicedScores;
+}
+
+function drawSimilarityGraph(selectedSections) {
     var nodes = [];
     var edges = [];
     var n = partyNames.length;
-    var sim = similarityMatrix(partyScores);
+    var sim = similarityMatrix(selectedSections && sliceScoresBySection(selectedSections) || partyScores);
     var network = null;
     
     for (var i = 0; i < n; i++) {
@@ -157,6 +181,19 @@ $(function() {
         } else {
             updatePartyMatches(getUserScores());
         }
+    });
+    
+    renderSimilarityToggles($("#similarity-toggles"));
+    $("#similarity-toggles .btn").on('click', function() {
+        var btn = $(this), active = btn.hasClass('active');
+        btn.toggleClass('btn-default', active);
+        btn.toggleClass('btn-success', !active);
+        setTimeout(function() {
+            var selectedSectionIds = $("#similarity-toggles input:checked").map(function() {
+                return $(this).data('section-id');
+            });
+            drawSimilarityGraph(selectedSectionIds);
+        }, 0);
     });
     
     drawSimilarityGraph();

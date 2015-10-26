@@ -42,8 +42,12 @@ function vector(n, val) {
     return v;
 }
 
+function neutral(a) {
+    return neutralScores.slice(0, a.length);
+}
+
 function normalized(a) {
-    return add(a, scale(-1, neutralScores));
+    return add(a, scale(-1, neutral(a)));
 }
 
 function angleAsPercent(a, b) {
