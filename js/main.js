@@ -114,12 +114,12 @@ function sliceScoresBySection(sections) {
     return slicedScores;
 }
 
+var network = null;
 function drawSimilarityGraph(selectedSections) {
     var nodes = [];
     var edges = [];
     var n = partyNames.length;
     var sim = similarityMatrix(selectedSections && sliceScoresBySection(selectedSections) || partyScores);
-    var network = null;
     
     for (var i = 0; i < n; i++) {
         nodes.push({id: i, value: 1, label: partyNames[i]});
@@ -145,9 +145,14 @@ function drawSimilarityGraph(selectedSections) {
     var options = {
         nodes: {
             shape: 'dot',
-        }
+        },
     };
-    network = new vis.Network(container, data, options);
+    if (!network) {
+        network = new vis.Network(container, data, options);
+    } else {
+        network.setOptions({physics: {stabilization: false}});
+        network.setData(data);
+    }
 }
 
 $(function() {
@@ -195,6 +200,9 @@ $(function() {
             drawSimilarityGraph(selectedSectionIds);
         }, 0);
     });
+    // switch off the section 4 toggle ("nezaposlenost mladih")
+    // TODO: move to config
+    $("input[data-section-id=4]").closest(".btn").trigger("click");
     
     drawSimilarityGraph();
 });
