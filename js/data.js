@@ -82,6 +82,7 @@ var partyNames = [
     "SDP"
 ];
 
+// [nParties x nQuestions]
 var partyScores = [
     /* tema 1               tema 2.1   tema 2.2      tema 2.3     tema 2.4   tema 2.5 */
     [2, 5, 5, 5, 1, 5, 1,   5, 5, 1,   5, 5, 5, 5,   5, 5, 5,     1, 1,      5],
@@ -98,3 +99,32 @@ var partyScores = [
     [4, 2, 5, 5, 2, 4, 2,   1, 5, 4,   3, 1, 1, 5,   3, 5, 3,     1, 1,      5]
 ];
 var neutralScores = new Array(partyScores[0].length+1).join("3").split('').map(parseFloat);
+var nParties = partyScores.length;
+var nQuestions = partyScores[0].length;
+
+// [nQuestions x nGrades(5)]
+var partyScoresFreq = (function _calcScoreFreq(partyScores) {
+    var freq = [];
+    for (var questionId = 0; questionId < nQuestions; questionId++) {
+        var cnt = [undefined, 0, 0, 0, 0, 0];
+        for (var partyId = 0; partyId < nParties; partyId++) {
+            cnt[partyScores[partyId][questionId]]++;
+        }
+        freq.push(cnt.slice(1));
+    }
+    return freq;
+})(partyScores);
+
+// [nQuestions x 1]
+var questionEntropies = (function _calcEntropies(f) {
+    var ents = [];
+    for (var questionId = 0; questionId < nQuestions; questionId++) {
+        var ent = 0;
+        for (var i = 0; i < f[questionId].length; i++) {
+            var p = f[questionId][i] / nParties;
+            if (p > 0) ent -= p * Math.log(p);
+        }
+        ents.push(ent/Math.log(2));
+    }
+    return ents;
+})(partyScoresFreq);
