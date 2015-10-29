@@ -15,8 +15,9 @@ function renderQuestions($target, answers) {
         for (var id = 0; id < sectionQuestions.texts.length; id++, questionId++) {
             var html = Mustache.render(tplQuestion, {
                 text: sectionQuestions.texts[id],
-                id: "question-" + questionId,
-                val: answers && answers[questionId]
+                id: questionId,
+                val: answers && answers[questionId],
+                entropy: questionEntropies[id]
             });
             $target.append($(html));
         }
@@ -28,7 +29,11 @@ function renderQuestions($target, answers) {
         reversed: true
     });
     $(".answer-slider").on('change', function(e) {
-        updatePartyMatches(getUserScores());
+        updatePartyMatchesAsSelected();
+    });
+    $('#questions-limit').slider();
+    $("#questions-limit").on('change', function(e) {
+        limitQuestionsTo(e.value.newValue);
     })
 }
 
@@ -78,8 +83,14 @@ function updatePartyMatches(userScores) {
     }
 }
 
+function updatePartyMatchesAsSelected() {
+    updatePartyMatches(getUserScores());
+}
+
 function getUserScores() {
-    return $(".answer-slider").map(function() {
+    return $(".answer-slider").sort(function(a, b) {
+        return +$(a).data('question-id') - +$(b).data('question-id');
+    }).map(function() {
         return $(this).data('slider').getValue();
     });
 }
@@ -99,6 +110,32 @@ function orderPartiesById() {
     for (var i = 0; i < partyNames.length; i++) {
         $(".party-match[data-party-id="+i+"]").detach().appendTo("#results");
     }
+}
+
+function orderQuestionsByDataKey(key, reverse) {
+    var cmp = function(a, b) {
+        var order = +$(a).data(key) - +$(b).data(key);
+        return reverse ? -order : order;
+    };
+    $("#questions .section").remove();
+    var q = $("#questions .question").detach();
+    q.sort(cmp);
+    $("#questions").append(q);
+}
+
+function limitQuestionsTo(n) {
+    $("#questions .section").slideUp();
+    $("#questions .question").slice(0, n).slideDown();
+    $("#questions .question").slice(n).slideUp().find(".answer-slider").each(function() {
+        var inp = $(this);
+        inp.data('old-val', inp.val());
+        inp.data('slider').setValue(3);
+    });
+    updatePartyMatchesAsSelected();
+}
+
+function limitQuestionsAsSelected() {
+    limitQuestionsTo($("#questions-limit").val());
 }
 
 function sliceScoresBySection(sections) {
@@ -184,8 +221,19 @@ $(function() {
         if (!elem.hasClass('active')) {
             orderPartiesById();
         } else {
-            updatePartyMatches(getUserScores());
+            updatePartyMatchesAsSelected();
         }
+    });
+    $("#keep-questions-sorted").on('click', function() {
+        setTimeout($.proxy(function() {
+            var sorted = $(this).hasClass('active');
+            if (sorted) {
+                orderQuestionsByDataKey('entropy', true);
+            } else {
+                orderQuestionsByDataKey('question-id');
+            }
+            limitQuestionsAsSelected();
+        }, this), 0);
     });
     
     renderSimilarityToggles($("#similarity-toggles"));

@@ -23,12 +23,17 @@
   <body>
     <div class="container">
       <div class="page-header">
-        <h1>Izborna Gatalica IG-2015</h1>
+        <h1>Izborna gatalica 2015</h1>
       </div>
       
       <div class="row">
         <div class="col-md-6" id="questions-pane">
           <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
+          <button type="button" id="keep-questions-sorted" data-toggle="button" class="btn btn-sm btn-default">
+            <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>&nbsp Sortiraj po inf. doprinosu
+          </button>
+          &nbsp;&nbsp; Broj pitanja: &nbsp;
+          <input type="text" id="questions-limit" data-slider-id="questions-limit-slider" data-slider-min="1" data-slider-max="20" data-slider-value="20"/>
           <div id="questions"></div>
         </div>
         
@@ -71,9 +76,9 @@
       </div>
     </script>
     <script id="template-question" type="x-tmpl-mustache">
-      <div class="question">
+      <div class="question" data-entropy="{{entropy}}" data-question-id="{{id}}">
         <h5>{{text}}</h5>
-        <input class="answer-slider" type="text" data-slider-id="{{id}}" data-slider-min="1" data-slider-max="5" data-slider-value="{{val}}"/>
+        <input class="answer-slider" type="text" data-question-id="{{id}}" data-slider-id="question-{{id}}" data-slider-min="1" data-slider-max="5" data-slider-value="{{val}}"/>
       </div>
     </script>
     <script id="template-party-match" type="x-tmpl-mustache">

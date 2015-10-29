@@ -29,12 +29,21 @@ body {
     .question {
         margin: 30px 0;
     }
-        .slider-selection {
+        .question .slider-selection {
             background: #dddddd;
         }
-        .slider.slider-horizontal {
+        .question .slider.slider-horizontal {
             width: 100%;
         }
+#questions-limit-slider.slider-horizontal {
+    width: 140px;
+}
+#questions-limit-slider .slider-selection {
+    background: #d3ecfa;
+}
+#questions-limit-slider .slider-handle {
+    background: linear-gradient(to bottom, #85cdef 0%, #6cb6d9 100%)
+}
 
 #results-pane.affix {
     top: 20px;
