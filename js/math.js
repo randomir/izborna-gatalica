@@ -20,12 +20,16 @@ function angle(a, b) {
     return Math.acos(cos);
 }
 
-function add(a, b) {
+function sub(a, b) {
     if (a.length != b.length) return;
     for (var i = 0, res = a.slice(); i < res.length; i++) {
-        res[i] += b[i];
+        res[i] -= b[i];
     }
     return res;
+}
+
+function add(a, b) {
+    return sub(a, scale(-1, b));
 }
 
 function scale(n, a) {
@@ -47,11 +51,15 @@ function neutral(a) {
 }
 
 function normalized(a) {
-    return add(a, scale(-1, neutral(a)));
+    return sub(a, neutral(a));
 }
 
 function angleAsPercent(a, b) {
     return 100 * (1 - angle(normalized(a), normalized(b)) / Math.PI);
+}
+
+function distance(a, b) {
+    return norm(sub(a, b));
 }
 
 // lower-triangular matrix of simalirity scores between parties

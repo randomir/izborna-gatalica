@@ -60,7 +60,7 @@ function renderSimilarityToggles($target) {
     }
 }
 
-function calcPartyMatches(userScores) {
+function calcPartyMatchesAngleBased(userScores) {
     var matches = [];
     for (var i = 0; i < partyScores.length; i++) {
         matches.push({
@@ -71,8 +71,22 @@ function calcPartyMatches(userScores) {
     return matches;
 }
 
+function calcPartyMatchesDistanceBased(userScores) {
+    var matches = [], maxdist = -1;
+    for (var i = 0; i < partyScores.length; i++) {
+        var dist = distance(partyScores[i], userScores);
+        matches.push({id: i, dist: dist});
+        if (dist > maxdist) maxdist = dist;
+    }
+    for (var i = 0; i < partyScores.length; i++) {
+        matches[i].score = 100 * (maxdist - matches[i].dist) / maxdist;
+    }
+    return matches;
+}
+
 function updatePartyMatches(userScores) {
-    var matches = calcPartyMatches(userScores);
+    var matches = calcPartyMatchesAngleBased(userScores);
+    //var matches = calcPartyMatchesDistanceBased(userScores);
     $(".party-score").each(function() {
         var elem = $(this), id = elem.data('party-id'),
             val = Math.round(matches[id].score), percent = val+'%';
