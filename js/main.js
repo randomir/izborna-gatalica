@@ -1,10 +1,12 @@
 //require('data.js')
 //require('math.js')
 
-function renderQuestions($target, answers) {
-    $target.empty();
+function renderQuestions(answers) {
+    var $target = $("#questions").empty(),
+        $controls = $("#questions-controls").empty();
     var tplSection = $("#template-section").html();
     var tplQuestion = $("#template-question").html();
+    var tplControls = $($controls.data('template')).html();
     for (var sectionId = 0, questionId = 0; sectionId < questions.length; sectionId++) {
         var sectionQuestions = questions[sectionId];
         
@@ -22,6 +24,7 @@ function renderQuestions($target, answers) {
             $target.append($(html));
         }
     }
+    
     $('.answer-slider').slider({
         formatter: function(value) {
             return answerDesc[value];
@@ -30,6 +33,18 @@ function renderQuestions($target, answers) {
     });
     $(".answer-slider").on('change', function(e) {
         updatePartyMatchesAsSelected();
+    });
+    $controls.append($(Mustache.render(tplControls)));
+    $("#keep-questions-sorted").on('click', function() {
+        setTimeout($.proxy(function() {
+            var sorted = $(this).hasClass('active');
+            if (sorted) {
+                orderQuestionsByDataKey('entropy', true);
+            } else {
+                orderQuestionsByDataKey('question-id');
+            }
+            limitQuestionsAsSelected();
+        }, this), 0);
     });
     $('#questions-limit').slider();
     $("#questions-limit").on('change', function(e) {
@@ -207,7 +222,7 @@ function drawSimilarityGraph(selectedSections) {
 }
 
 $(function() {
-    renderQuestions($("#questions"), neutralScores);
+    renderQuestions(neutralScores);
     renderParties($("#results"));
     $(".answer-slider:first").trigger('change');
     
@@ -225,7 +240,7 @@ $(function() {
     $(".party-score-link").on('click', function() {
         var id = $(this).data('party-id');
         var scores = partyScores[id];
-        renderQuestions($("#questions"), scores);
+        renderQuestions(scores);
         updatePartyMatches(scores);
         return false;
     });
@@ -237,17 +252,6 @@ $(function() {
         } else {
             updatePartyMatchesAsSelected();
         }
-    });
-    $("#keep-questions-sorted").on('click', function() {
-        setTimeout($.proxy(function() {
-            var sorted = $(this).hasClass('active');
-            if (sorted) {
-                orderQuestionsByDataKey('entropy', true);
-            } else {
-                orderQuestionsByDataKey('question-id');
-            }
-            limitQuestionsAsSelected();
-        }, this), 0);
     });
     
     renderSimilarityToggles($("#similarity-toggles"));

@@ -12,7 +12,7 @@
     <meta property="og:image" content="http://gatalica.randomir.net/img/gatalica-2.png"/>
     <meta property="og:description" content="Doznaj slaganje svojih stavova sa stavovima
     glavnih igrača ovojesenske izborne utakmice; prouči međusobnu sličnost stranaka po
-    temema; te ispitaj osjetljivost stranaka na pojedinu temu ili pitanje!"/>
+    temama; te ispitaj osjetljivost stranaka na pojedinu temu ili pitanje!"/>
     <meta property="og:type" content="website"/>
     <title>IG-2015: Izborna Gatalica</title>
     <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,11 +29,7 @@
       <div class="row">
         <div class="col-md-6" id="questions-pane">
           <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
-          <button type="button" id="keep-questions-sorted" data-toggle="button" class="btn btn-sm btn-default">
-            <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>&nbsp Sortiraj po inf. doprinosu
-          </button>
-          &nbsp;&nbsp; Broj pitanja: &nbsp;
-          <input type="text" id="questions-limit" data-slider-id="questions-limit-slider" data-slider-min="1" data-slider-max="20" data-slider-value="20"/>
+          <div id="questions-controls" data-template="#template-questions-controls"></div>
           <div id="questions"></div>
         </div>
         
@@ -70,6 +66,13 @@
       </div>
     </div>
     
+    <script id="template-questions-controls" type="x-tmpl-mustache">
+      <button type="button" id="keep-questions-sorted" data-toggle="button" class="btn btn-sm btn-default">
+        <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>&nbsp Sortiraj po inf. doprinosu
+      </button>
+      &nbsp;&nbsp; Broj pitanja: &nbsp;
+      <input type="text" id="questions-limit" data-slider-id="questions-limit-slider" data-slider-min="1" data-slider-max="20" data-slider-value="20"/>
+    </script>
     <script id="template-section" type="x-tmpl-mustache">
       <div class="section">
         <h5><strong>{{text}}</strong></h5>
@@ -102,7 +105,7 @@
         <input type="checkbox" autocomplete="off" data-section-id="{{sectionId}}" checked><span class="glyphicon glyphicon-tag"></span> {{title}}
       </label>
     </script>
-    
+
     <script src="lib/jquery-2.1.1.min.js"></script>
     <script src="lib/mustache-0.8.2.min.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
