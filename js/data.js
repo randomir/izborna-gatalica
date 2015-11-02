@@ -56,6 +56,19 @@ var questions = [{
     texts: [
         "Porez na nekretnine pravedan je i poželjan porez."
     ]
+}, {
+    sectionTitle: "Migranti i imigranti",
+    shortTitle: "Migracije",
+    texts: [
+        "Hrvatska uopće ne treba primati migrante dok god ima visoku nezaposlenost.",
+        "Hrvatska treba primiti samo kršćane jer to najbolje odgovara nacionalnim interesima.",
+        "Migranti iz Sirije su dobrodošli i država im treba ponuditi smještaj, posao i priliku za brzu integraciju u društvo.",
+        "Hrvatska treba useljavati imigrante koji su joj potrebni za tržište radne snage bez obzira na to iz kojeg dijela svijeta dolaze i koje su vjere i nacionalnosti.",
+        "Hrvatska treba voditi strogu imigracijsku politiku i omogućiti doseljavanje visokoobrazovanih imigranata koji znaju hrvatski jezik i koji mogu položiti bankovno jamstvo u slučaju javnih troškova proizišlih iz useljavanja.",
+        "Useljavanje treba biti strogo kontrolirano i usmjereno prema dijelovima zemlje gdje je najmanje stanovništva.",
+        "Hrvatska treba imigrante rasporediti po svim općinama tako da broj imigranata po općini ne prelazi više od 1,5 % domicilnog stanovništva.",
+        "Hrvatska treba razvijati politiku tolerancije kod domaćeg stanovništva prema imigrantima, ali i osigurati da se imigranti prilagode temeljnim vrijednostima hrvatskoga društva."
+    ]
 }];
 
 (function _updateQuestionsMeta(questions) {
@@ -66,7 +79,7 @@ var questions = [{
         offset += section.count;
     }
 })(questions);
-    
+
 var partyNames = [
     "Živi zid",
     "U ime obitelji",
@@ -84,19 +97,19 @@ var partyNames = [
 
 // [nParties x nQuestions]
 var partyScores = [
-    /* tema 1               tema 2.1   tema 2.2      tema 2.3     tema 2.4   tema 2.5 */
-    [2, 5, 5, 5, 1, 5, 1,   5, 5, 1,   5, 5, 5, 5,   5, 5, 5,     1, 1,      5],
-    [2, 4, 4, 4, 1, 5, 2,   2, 4, 4,   2, 4, 2, 4,   4, 2, 3/*-*/,1, 1,      5],
-    [5, 5, 5, 3, 1, 3, 1,   1, 2, 5,   3, 1, 2, 3,   3, 2, 3,     3, 1,      3],
-    [5, 5, 5, 5, 1, 1, 1,   4, 4, 1,   4, 1, 5, 2,   5, 5, 4,     1, 1,      2],
-    [5, 5, 5, 5, 1, 2, 2,   1, 5, 2,   5, 1, 2, 2,   5, 2, 2,     1, 1,      2],
-    [5, 5, 4, 5, 2, 3, 1,   2, 5, 5,   3, 1, 3, 1,   1, 3, 1,     3, 1,      2],
-    [4, 5, 1, 3, 1, 4, 5,   2, 5, 5,   4, 2, 1, 4,   3, 2, 2,     1, 1,      4],
-    [2, 4, 5, 4, 2, 4, 5,   2, 5, 2,   2, 1, 4, 3,   5, 5, 5,     2, 2,      4],
-    [5, 5, 5, 3, 1, 3, 3,   2, 5, 1,   5, 1, 3, 3,   4, 5, 4,     1, 1,      5],
-    [3, 4, 2, 5, 2, 2, 2,   2, 5, 2,   2, 5, 5, 5,   4, 2, 5,     1, 3,      2],
-    [1, 5, 3, 4, 1, 4, 3,   2, 5, 2,   2, 2, 1, 5,   5, 2, 5,     1, 2,      4],
-    [4, 2, 5, 5, 2, 4, 2,   1, 5, 4,   3, 1, 1, 5,   3, 5, 3,     1, 1,      5]
+    /* tema 1              2.1      2.2         2.3      2.4   2.5 3 */
+    [2, 5, 5, 5, 1, 5, 1,  5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 5,  3, 3, 3, 2, 5, 3, 3, 3],
+    [2, 4, 4, 4, 1, 5, 2,  2, 4, 4, 2, 4, 2, 4, 4, 2, 3, 1, 1, 5,  1, 5, 5, 2, 2, 2, 2, 1],
+    [5, 5, 5, 3, 1, 3, 1,  1, 2, 5, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3,  4, 5, 2, 2, 3, 3, 2, 1],
+    [5, 5, 5, 5, 1, 1, 1,  4, 4, 1, 4, 1, 5, 2, 5, 5, 4, 1, 1, 2,  5, 5, 2, 2, 4, 4, 3, 1],
+    [5, 5, 5, 5, 1, 2, 2,  1, 5, 2, 5, 1, 2, 2, 5, 2, 2, 1, 1, 2,  4, 5, 2, 3, 4, 4, 2, 1],
+    [5, 5, 4, 5, 2, 3, 1,  2, 5, 5, 3, 1, 3, 1, 1, 3, 1, 3, 1, 2,  2, 5, 3, 2, 3, 4, 2, 2],
+    [4, 5, 1, 3, 1, 4, 5,  2, 5, 5, 4, 2, 1, 4, 3, 2, 2, 1, 1, 4,  5, 5, 4, 2, 4, 2, 3, 2],
+    [2, 4, 5, 4, 2, 4, 5,  2, 5, 2, 2, 1, 4, 3, 5, 5, 5, 2, 2, 4,  2, 3, 5, 4, 2, 4, 5, 3],
+    [5, 5, 5, 3, 1, 3, 3,  2, 5, 1, 5, 1, 3, 3, 4, 5, 4, 1, 1, 5,  1, 5, 5, 4, 1, 5, 5, 5],
+    [3, 4, 2, 5, 2, 2, 2,  2, 5, 2, 2, 5, 5, 5, 4, 2, 5, 1, 3, 2,  4, 3, 4, 2, 4, 2, 1, 1],
+    [1, 5, 3, 4, 1, 4, 3,  2, 5, 2, 2, 2, 1, 5, 5, 2, 5, 1, 2, 4,  4, 4, 4, 2, 2, 3, 2, 1],
+    [4, 2, 5, 5, 2, 4, 2,  1, 5, 4, 3, 1, 1, 5, 3, 5, 3, 1, 1, 5,  5, 5, 2, 3, 3, 5, 2, 1]
 ];
 var neutralScores = new Array(partyScores[0].length+1).join("3").split('').map(parseFloat);
 var nParties = partyScores.length;

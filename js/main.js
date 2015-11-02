@@ -34,7 +34,7 @@ function renderQuestions(answers) {
     $(".answer-slider").on('change', function(e) {
         updatePartyMatchesAsSelected();
     });
-    $controls.append($(Mustache.render(tplControls)));
+    $controls.append($(Mustache.render(tplControls, {nQuestions: nQuestions})));
     $("#keep-questions-sorted").on('click', function() {
         setTimeout($.proxy(function() {
             var sorted = $(this).hasClass('active');
