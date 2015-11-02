@@ -69,6 +69,35 @@ var questions = [{
         "Hrvatska treba imigrante rasporediti po svim općinama tako da broj imigranata po općini ne prelazi više od 1,5 % domicilnog stanovništva.",
         "Hrvatska treba razvijati politiku tolerancije kod domaćeg stanovništva prema imigrantima, ali i osigurati da se imigranti prilagode temeljnim vrijednostima hrvatskoga društva."
     ]
+}, {
+    sectionTitle: "Švicarski franak",
+    shortTitle: "Švicarski franak",
+    texts: [
+        "Država treba pomoći svim dužnicima u švicarskim francima, bez obzira na namjenu kredita",
+        "Država treba pomoći samo onim dužnicima u švicarskim francima koji zadovoljavaju određene socijalne kriterije (primjerice prva nekretnina i sl.)."
+    ]
+}, {
+    sectionTitle: "Politika prema braniteljima",
+    shortTitle: "Politika prema braniteljima",
+    texts: [
+        "Politika prema braniteljima mora ostati samostalan resor, a ne se priključiti socijalnoj ili nekoj drugoj politici.",
+        "Hrvatski branitelji trebaju dobiti dionice svih javnih tvrtki za koje se planira izlazak na tržište kapitala."
+    ]
+}, {
+    sectionTitle: "Socijalna politika",
+    shortTitle: "Socijalna politika",
+    texts: [
+        "Primanje socijalne naknade ili drugih socijalnih davanja treba onemogućiti osobama koje imaju vrijednu imovinu ili nekretnine.",
+        "Svi građani Republike Hrvatske trebaju u jednakoj mjeri snositi troškove poskupljenja struje kako bi se pomoglo socijalno ugroženim građanima."
+    ]
+}, {
+    sectionTitle: "Mirovinska politika",
+    shortTitle: "Mirovinska politika",
+    texts: [
+        "Hrvatska treba, kao što nam preporuča i Europska komisija u svom izvješću, uvesti penalizaciju prijevremenog umirovljenja.",
+        "Sve radno sposobne umirovljenike, uključujući braniteljsku populaciju, treba pokušati ponovno uključiti u tržište rada.",
+        "Hrvatska treba čim prije povećati dobnu granicu za odlazak u mirovnu kako bi se omogućila stabilna isplata mirovina u budućnosti."
+    ]
 }];
 
 (function _updateQuestionsMeta(questions) {
@@ -97,19 +126,19 @@ var partyNames = [
 
 // [nParties x nQuestions]
 var partyScores = [
-    /* tema 1              2.1      2.2         2.3      2.4   2.5 3 */
-    [2, 5, 5, 5, 1, 5, 1,  5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 5,  3, 3, 3, 2, 5, 3, 3, 3],
-    [2, 4, 4, 4, 1, 5, 2,  2, 4, 4, 2, 4, 2, 4, 4, 2, 3, 1, 1, 5,  1, 5, 5, 2, 2, 2, 2, 1],
-    [5, 5, 5, 3, 1, 3, 1,  1, 2, 5, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3,  4, 5, 2, 2, 3, 3, 2, 1],
-    [5, 5, 5, 5, 1, 1, 1,  4, 4, 1, 4, 1, 5, 2, 5, 5, 4, 1, 1, 2,  5, 5, 2, 2, 4, 4, 3, 1],
-    [5, 5, 5, 5, 1, 2, 2,  1, 5, 2, 5, 1, 2, 2, 5, 2, 2, 1, 1, 2,  4, 5, 2, 3, 4, 4, 2, 1],
-    [5, 5, 4, 5, 2, 3, 1,  2, 5, 5, 3, 1, 3, 1, 1, 3, 1, 3, 1, 2,  2, 5, 3, 2, 3, 4, 2, 2],
-    [4, 5, 1, 3, 1, 4, 5,  2, 5, 5, 4, 2, 1, 4, 3, 2, 2, 1, 1, 4,  5, 5, 4, 2, 4, 2, 3, 2],
-    [2, 4, 5, 4, 2, 4, 5,  2, 5, 2, 2, 1, 4, 3, 5, 5, 5, 2, 2, 4,  2, 3, 5, 4, 2, 4, 5, 3],
-    [5, 5, 5, 3, 1, 3, 3,  2, 5, 1, 5, 1, 3, 3, 4, 5, 4, 1, 1, 5,  1, 5, 5, 4, 1, 5, 5, 5],
-    [3, 4, 2, 5, 2, 2, 2,  2, 5, 2, 2, 5, 5, 5, 4, 2, 5, 1, 3, 2,  4, 3, 4, 2, 4, 2, 1, 1],
-    [1, 5, 3, 4, 1, 4, 3,  2, 5, 2, 2, 2, 1, 5, 5, 2, 5, 1, 2, 4,  4, 4, 4, 2, 2, 3, 2, 1],
-    [4, 2, 5, 5, 2, 4, 2,  1, 5, 4, 3, 1, 1, 5, 3, 5, 3, 1, 1, 5,  5, 5, 2, 3, 3, 5, 2, 1]
+    /* tema 1              2.1      2.2         2.3      2.4   2.5 3                        4 */
+    [2, 5, 5, 5, 1, 5, 1,  5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 1, 1, 5,  3, 3, 3, 2, 5, 3, 3, 3,  1, 5, 1, 6, 3, 6, 5, 4, 5],
+    [2, 4, 4, 4, 1, 5, 2,  2, 4, 4, 2, 4, 2, 4, 4, 2, 3, 1, 1, 5,  1, 5, 5, 2, 2, 2, 2, 1,  5, 1, 1, 5, 1, 4, 2, 4, 5],
+    [5, 5, 5, 3, 1, 3, 1,  1, 2, 5, 3, 1, 2, 3, 3, 2, 3, 3, 1, 3,  4, 5, 2, 2, 3, 3, 2, 1,  5, 1, 5, 1, 2, 1, 1, 3, 2],
+    [5, 5, 5, 5, 1, 1, 1,  4, 4, 1, 4, 1, 5, 2, 5, 5, 4, 1, 1, 2,  5, 5, 2, 2, 4, 4, 3, 1,  2, 2, 4, 5, 2, 4, 2, 1, 4],
+    [5, 5, 5, 5, 1, 2, 2,  1, 5, 2, 5, 1, 2, 2, 5, 2, 2, 1, 1, 2,  4, 5, 2, 3, 4, 4, 2, 1,  2, 1, 1, 5, 1, 1, 2, 1, 2],
+    [5, 5, 4, 5, 2, 3, 1,  2, 5, 5, 3, 1, 3, 1, 1, 3, 1, 3, 1, 2,  2, 5, 3, 2, 3, 4, 2, 2,  2, 1, 4, 2, 1, 2, 1, 1, 4],
+    [4, 5, 1, 3, 1, 4, 5,  2, 5, 5, 4, 2, 1, 4, 3, 2, 2, 1, 1, 4,  5, 5, 4, 2, 4, 2, 3, 2,  4, 1, 3, 4, 4, 2, 3, 2, 3],
+    [2, 4, 5, 4, 2, 4, 5,  2, 5, 2, 2, 1, 4, 3, 5, 5, 5, 2, 2, 4,  2, 3, 5, 4, 2, 4, 5, 3,  2, 3, 1, 2, 2, 3, 5, 4, 4],
+    [5, 5, 5, 3, 1, 3, 3,  2, 5, 1, 5, 1, 3, 3, 4, 5, 4, 1, 1, 5,  1, 5, 5, 4, 1, 5, 5, 5,  1, 4, 1, 2, 1, 1, 1, 2, 1],
+    [3, 4, 2, 5, 2, 2, 2,  2, 5, 2, 2, 5, 5, 5, 4, 2, 5, 1, 3, 2,  4, 3, 4, 2, 4, 2, 1, 1,  3, 3, 1, 2, 3, 1, 2, 2, 5],
+    [1, 5, 3, 4, 1, 4, 3,  2, 5, 2, 2, 2, 1, 5, 5, 2, 5, 1, 2, 4,  4, 4, 4, 2, 2, 3, 2, 1,  1, 5, 1, 2, 1, 5, 3, 1, 3],
+    [4, 2, 5, 5, 2, 4, 2,  1, 5, 4, 3, 1, 1, 5, 3, 5, 3, 1, 1, 5,  5, 5, 2, 3, 3, 5, 2, 1,  1, 5, 2, 2, 1, 4, 3, 2, 3]
 ];
 var neutralScores = new Array(partyScores[0].length+1).join("3").split('').map(parseFloat);
 var nParties = partyScores.length;
