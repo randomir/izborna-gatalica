@@ -197,7 +197,7 @@ function drawSimilarityGraph(selectedSections) {
     for (var i = 1; i < n; i++) {
         for (var j = 0; j < i; j++) {
             var xs = scaled(sim[i][j]);
-            if (xs > 0.7) {
+            if (xs > 0.69) {
                 edges.push({from: i, to: j, value: xs, title: sim[i][j].toFixed(2)+"%"});
             }
         }
@@ -266,9 +266,12 @@ $(function() {
             drawSimilarityGraph(selectedSectionIds);
         }, 0);
     });
-    // switch off the section 4 toggle ("nezaposlenost mladih")
-    // TODO: move to config
-    $("input[data-section-id=4]").closest(".btn").trigger("click");
+    $("#toggle-all").on("click", function() {
+        $("#similarity-toggles .btn:not(.active)").click();
+    });
+    $("#toggle-none").on("click", function() {
+        $("#similarity-toggles .btn.active").click();
+    });
     
     drawSimilarityGraph();
 });
