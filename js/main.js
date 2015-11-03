@@ -231,11 +231,12 @@ $(function() {
     };
     $("#results-pane").affix({
         offset: {
-            top: $(".page-header:first").outerHeight(true) - 20,
-            bottom: $(document).height() - $("#similarity-section").offset().top
+            top: $(".page-header:first").outerHeight(true) - 10,
+            bottom: $(document).height() - $("#similarity-section").offset().top + 40
         }
     }).on('affixed.bs.affix', updateResultsPaneWidth);
     $(window).on('resize', updateResultsPaneWidth);
+    updateResultsPaneWidth();
     
     $(".party-score-link").on('click', function() {
         var id = $(this).data('party-id');

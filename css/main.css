@@ -46,7 +46,10 @@ body {
 }
 
 #results-pane.affix {
-    top: 20px;
+    top: 10px;
+}
+#results-pane.affix-bottom {
+    position: absolute;
 }
 @media (max-width: 992px) {
     .affix {
