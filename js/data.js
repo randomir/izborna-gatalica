@@ -1,3 +1,5 @@
+//require('math.js')
+
 var answerDesc = {
     1: "snažno podržavam",
     2: "djelomično podržavam",
