@@ -68,7 +68,7 @@ var questions = [{
         "Hrvatska treba useljavati imigrante koji su joj potrebni za tržište radne snage bez obzira na to iz kojeg dijela svijeta dolaze i koje su vjere i nacionalnosti.",
         "Hrvatska treba voditi strogu imigracijsku politiku i omogućiti doseljavanje visokoobrazovanih imigranata koji znaju hrvatski jezik i koji mogu položiti bankovno jamstvo u slučaju javnih troškova proizišlih iz useljavanja.",
         "Useljavanje treba biti strogo kontrolirano i usmjereno prema dijelovima zemlje gdje je najmanje stanovništva.",
-        "Hrvatska treba imigrante rasporediti po svim općinama tako da broj imigranata po općini ne prelazi više od 1,5 % domicilnog stanovništva.",
+        "Hrvatska treba imigrante rasporediti po svim općinama tako da broj imigranata po općini ne prelazi više od 1,5% domicilnog stanovništva.",
         "Hrvatska treba razvijati politiku tolerancije kod domaćeg stanovništva prema imigrantima, ali i osigurati da se imigranti prilagode temeljnim vrijednostima hrvatskoga društva."
     ]
 }, {
