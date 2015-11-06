@@ -231,7 +231,7 @@ $(function() {
     };
     $("#results-pane").affix({
         offset: {
-            top: $(".page-header:first").outerHeight(true) - 10,
+            top: $("#results-pane").offset().top,
             bottom: $(document).height() - $("#similarity-section").offset().top + 40
         }
     }).on('affixed.bs.affix', updateResultsPaneWidth);
