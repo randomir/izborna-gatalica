@@ -5,6 +5,16 @@ html {
 body {
     margin-bottom: 60px;
 }
+.navbar-default {
+    background: white;
+    border-style: hidden;
+}
+.nav-heading {
+    margin: 30px 0 20px;
+}
+#nav-collapse {
+    margin-top: 30px;
+}
 .footer {
     position: absolute;
     bottom: 0;
@@ -65,7 +75,7 @@ body {
     }
         .party-name {}
         .party-score-link {
-            color: inherit;
+            /*color: inherit;*/
         }
         .party-score {}
 
