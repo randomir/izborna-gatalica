@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
+import json
 from sklearn import tree
 from sklearn.externals.six import StringIO
 
@@ -36,18 +37,37 @@ def generate(n_samples, scores_norm):
         Y.append(classify(x, scores_norm))
     return X, Y
 
-def train(X, Y):
-    clf = tree.DecisionTreeClassifier()
+def train(X, Y, **kwargs):
+    clf = tree.DecisionTreeClassifier(**kwargs)
     clf = clf.fit(X, Y)
     return clf
 
-def export(clf, filename):
+def export_dot(clf, filename):
     with open(filename, 'w') as f:
         tree.export_graphviz(clf, out_file=f)
 
-X, Y = generate(1000, scores_norm)
-clf = train(X, Y)
-export(clf, 'tree.dot')
+def export_json(clf, filename):
+    t = clf.tree_
+    with open(filename, 'w') as f:
+        json.dump({
+            "n_nodes": t.node_count,
+            "max_depth": t.max_depth,
+            "feature": t.feature.tolist(),
+            "threshold": t.threshold.tolist(),
+            "children_left": t.children_left.tolist(),
+            "children_right": t.children_right.tolist(),
+            "gini": t.impurity.tolist(),
+            "n_samples": t.n_node_samples.tolist(),
+            "value": t.n_node_samples.tolist(),
+        }, fp=f, indent=2)
 
-clf12 = train(scores, np.arange(0, 12))
-export(clf12, '12.dot')
+
+if __name__ == '__main__':
+    X, Y = generate(1000, scores_norm)
+    clf = train(X, Y, max_depth=10)
+    export_dot(clf, 'tree.dot')
+    export_json(clf, 'tree.json')
+    
+    clf12 = train(scores, np.arange(0, 12))
+    export_dot(clf12, '12.dot')
+    export_json(clf12, '12.json')
