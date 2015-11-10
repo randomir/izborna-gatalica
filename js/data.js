@@ -111,6 +111,14 @@ var questions = [{
     }
 })(questions);
 
+var questionTexts = (function _generateQuestionTextsArray(questions) {
+    var texts = [];
+    for (var sectionId = 0; sectionId < questions.length; sectionId++) {
+        texts = texts.concat(questions[sectionId].texts);
+    }
+    return texts;
+})(questions);
+
 var partyNames = [
     "Živi zid",
     "U ime obitelji",

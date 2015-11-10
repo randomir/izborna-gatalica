@@ -33,7 +33,7 @@ function renderQuestions(answers) {
         reversed: true
     });
     $(".answer-slider", $pane).on('change', function(e) {
-        updatePartyMatchesAsSelected();
+        updatePartyMatchesCompleteAsSelected();
     });
     $controls.append($(Mustache.render(tplControls, {nQuestions: nQuestions})));
     $("#keep-questions-sorted").on('click', function() {
@@ -52,6 +52,30 @@ function renderQuestions(answers) {
     $('#questions-limit').slider();
     $("#questions-limit").on('change', function(e) {
         limitQuestionsTo(e.value.newValue);
+    });
+}
+
+function renderSelectedQuestions(answers) {
+    var $pane = $("#quiz-short"),
+        $target = $("#selected-questions").empty();
+    var tplQuestion = $("#template-selected-question").html();
+    var qid = decisionTree.feature[0];
+    var html = Mustache.render(tplQuestion, {
+        text: questionTexts[qid],
+        id: qid,
+        val: 3,
+        nodeid: 0
+    });
+    $target.append($(html));
+
+    $('.answer-slider', $pane).slider({
+        formatter: function(value) {
+            return answerDesc[value];
+        },
+        reversed: true
+    });
+    $(".answer-slider", $pane).on('change', function(e) {
+        var val = e.value.newValue;
     });
 }
 
@@ -102,13 +126,10 @@ function calcPartyMatchesDistanceBased(userScores) {
     return matches;
 }
 
-function updatePartyMatches(userScores) {
-    var $pane = $("#quiz-long");
-    var matches = calcPartyMatchesAngleBased(userScores);
-    //var matches = calcPartyMatchesDistanceBased(userScores);
+function updatePartyMatchesGeneric($pane, scores) {
     $(".party-score", $pane).each(function() {
         var elem = $(this), id = elem.data('party-id'),
-            val = Math.round(matches[id].score), percent = val+'%';
+            val = Math.round(scores[id]), percent = val+'%';
         elem.data('aria-valuenow', val).css({width: percent}).text(percent);
         elem.closest(".party-match").data('matching', val);
     });
@@ -117,8 +138,14 @@ function updatePartyMatches(userScores) {
     }
 }
 
-function updatePartyMatchesAsSelected() {
-    updatePartyMatches(getUserScoresComplete());
+function updatePartyMatchesComplete(userScores) {
+    var matches = calcPartyMatchesAngleBased(userScores);
+    var scores = matches.map(function(x) { return x.score });
+    updatePartyMatchesGeneric($("#quiz-long"), scores);
+}
+
+function updatePartyMatchesCompleteAsSelected() {
+    updatePartyMatchesComplete(getUserScoresComplete());
 }
 
 function getUserScoresComplete() {
@@ -149,7 +176,7 @@ function limitQuestionsTo(n) {
         inp.data('old-val', inp.val());
         inp.data('slider').setValue(3);
     });
-    updatePartyMatchesAsSelected();
+    updatePartyMatchesCompleteAsSelected();
 }
 
 function limitQuestionsAsSelected() {
@@ -211,6 +238,7 @@ function drawSimilarityGraph(selectedSections) {
 }
 
 $(function() {
+    // complete/long quiz
     renderQuestions(neutralScores);
     renderParties($("#quiz-long .results"));
     $(".answer-slider:first").trigger('change');
@@ -231,7 +259,7 @@ $(function() {
         var id = $(this).data('party-id');
         var scores = partyScores[id];
         renderQuestions(scores);
-        updatePartyMatches(scores);
+        updatePartyMatchesComplete(scores);
         return false;
     });
     $(".keep-parties-sorted").on('click', function() {
@@ -244,10 +272,12 @@ $(function() {
         }
     });
     
+    // short quiz/selected questions
+    renderSelectedQuestions();
     renderParties($("#quiz-short .results"));
     $("#quiz-short .party-score-link").on('click', false);
     
-    
+    // similarity graph
     renderSimilarityToggles($("#similarity-toggles"));
     $("#similarity-toggles .btn").on('click', function() {
         var btn = $(this), active = btn.hasClass('active');
