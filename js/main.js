@@ -3,7 +3,7 @@
 
 function renderQuestions(answers) {
     var $pane = $("#quiz-long"),
-        $target = $("#questions").empty(),
+        $target = $(".questions", $pane).empty(),
         $controls = $("#questions-controls").empty();
     var tplSection = $("#template-section").html();
     var tplQuestion = $("#template-question").html();
@@ -39,8 +39,8 @@ function renderQuestions(answers) {
     $("#keep-questions-sorted").on('click', function() {
         setTimeout($.proxy(function() {
             var sorted = $(this).hasClass('active'),
-                questions = $("#questions .question"),
-                sectionTitles = $("#questions .section").remove();
+                questions = $(".question", $pane),
+                sectionTitles = $(".section", $pane).remove();
             if (sorted) {
                 orderItemsByDataKey(questions, 'entropy', true);
             } else {
@@ -59,24 +59,49 @@ function renderSelectedQuestions(answers) {
     var $pane = $("#quiz-short"),
         $target = $("#selected-questions").empty();
     var tplQuestion = $("#template-selected-question").html();
-    var qid = decisionTree.feature[0];
-    var html = Mustache.render(tplQuestion, {
-        text: questionTexts[qid],
-        id: qid,
-        val: 3,
-        nodeid: 0
-    });
-    $target.append($(html));
+    
+    function _createQuestion(nodeId, val) {
+        var questionId = decisionTree.feature[nodeId];
+        var html = Mustache.render(tplQuestion, {
+            text: questionTexts[questionId],
+            id: questionId,
+            val: val || 3,
+            nodeId: nodeId
+        });
+        return $(html);
+    }
+    function _appendQuestion(nodeId) {
+        var $q = _createQuestion(nodeId);
+        $target.append($q);
+        $('.answer-slider', $q).slider({
+            formatter: function(value) { return answerDesc[value] },
+            reversed: true
+        });
+    }
+    _appendQuestion(0);
 
-    $('.answer-slider', $pane).slider({
-        formatter: function(value) {
-            return answerDesc[value];
-        },
-        reversed: true
+    $pane.on('change', ".answer-slider", function(e) {
+        var elem = $(this), question = elem.closest(".question");
+        var nodeId = question.data('node-id');
+        // obliviate successor questions
+        question.nextAll(".question").remove();
+        // append next question, depending on current's q. value
+        var val = e.value.newValue - 3,
+            next = nextNodeId(nodeId, val),
+            atleaf = decisionTree.feature[next] < 0;
+        if (!atleaf) _appendQuestion(next);
+        if (next > 0) {
+            // update matching
+            updatePartyMatchesHeuristically(next);
+            question.addClass('answered');
+        }
     });
-    $(".answer-slider", $pane).on('change', function(e) {
-        var val = e.value.newValue;
-    });
+}
+
+function nextNodeId(nodeId, val) {
+    var threshold = decisionTree.threshold[nodeId];
+    var next = decisionTree[val <= threshold ? "children_left" : "children_right"][nodeId];
+    return next;
 }
 
 function renderParties($target) {
@@ -156,6 +181,13 @@ function getUserScoresComplete() {
     });
 }
 
+function updatePartyMatchesHeuristically(nodeId) {
+    if (nodeId < 0) return;
+    var n_samples = decisionTree.n_samples[nodeId],
+        distribution = decisionTree.distribution[nodeId];
+    updatePartyMatchesGeneric($("#quiz-short"), distribution);
+}
+
 function orderItemsByDataKey(items, key, reverse) {
     if (items.length < 1) return;
     var cmp = function(a, b) {
@@ -169,9 +201,9 @@ function orderItemsByDataKey(items, key, reverse) {
 }
 
 function limitQuestionsTo(n) {
-    $("#questions .section").slideUp();
-    $("#questions .question").slice(0, n).slideDown();
-    $("#questions .question").slice(n).slideUp().find(".answer-slider").each(function() {
+    $("#all-questions .section").slideUp();
+    $("#all-questions .question").slice(0, n).slideDown();
+    $("#all-questions .question").slice(n).slideUp().find(".answer-slider").each(function() {
         var inp = $(this);
         inp.data('old-val', inp.val());
         inp.data('slider').setValue(3);
@@ -244,7 +276,7 @@ $(function() {
     $(".answer-slider:first").trigger('change');
     
     var updateResultsPaneWidth = function() {
-        $(".results-pane").css({width: $("#questions-pane").width()});
+        $("#quiz-long .results-pane").css({width: $("#all-questions-pane").width()});
     };
     $("#quiz-long .results-pane").affix({
         offset: {
@@ -274,6 +306,9 @@ $(function() {
     
     // short quiz/selected questions
     renderSelectedQuestions();
+    $(".nav-pills a[href=#quiz-short]").on('shown.bs.tab', function() {
+        $("#quiz-short .answer-slider").data('slider').relayout();
+    });
     renderParties($("#quiz-short .results"));
     $("#quiz-short .party-score-link").on('click', false);
     

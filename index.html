@@ -84,10 +84,10 @@
         
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade in active" id="quiz-long">
-            <div class="col-md-6" id="questions-pane">
+            <div class="col-md-6" id="all-questions-pane">
               <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
               <div id="questions-controls" data-template="#template-questions-controls"></div>
-              <div id="questions"></div>
+              <div id="all-questions" class="questions"></div>
             </div>
             <div class="col-md-6">
               <div class="results-pane">
@@ -103,7 +103,7 @@
           <div role="tabpanel" class="tab-pane fade" id="quiz-short">
             <div class="col-md-6" id="selected-questions-pane">
               <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
-              <div id="selected-questions"></div>
+              <div id="selected-questions" class="questions"></div>
             </div>
             <div class="col-md-6">
               <div class="results-pane">
@@ -162,7 +162,7 @@
       </div>
     </script>
     <script id="template-selected-question" type="x-tmpl-mustache">
-      <div class="question" data-question-id="{{id}}" data-node-id="{{nodeid}}">
+      <div class="question" data-question-id="{{id}}" data-node-id="{{nodeId}}">
         <h5>{{text}}</h5>
         <input class="answer-slider" type="text" data-question-id="{{id}}" data-slider-id="question-{{id}}" data-slider-min="1" data-slider-max="5" data-slider-value="{{val}}"/>
       </div>

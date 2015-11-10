@@ -51,7 +51,7 @@ body {
         border: 1px solid #337ab7;
     }
 
-#questions, .results {
+.questions, .results {
     margin-top: 30px;
 }
     .question {
@@ -71,6 +71,12 @@ body {
 }
 #questions-limit-slider .slider-handle {
     background: linear-gradient(to bottom, #85cdef 0%, #6cb6d9 100%)
+}
+#quiz-short .question:not(.answered) .slider-handle {
+    background-color: #6e6e6e;
+    background-image: -webkit-linear-gradient(top, #808080 0%, #555555 100%);
+    background-image: -o-linear-gradient(top, #808080 0%, #555555 100%);
+    background-image: linear-gradient(to bottom, #808080 0%, #555555 100%);
 }
 
 .results-pane.affix {
