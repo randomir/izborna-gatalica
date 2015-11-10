@@ -2,7 +2,8 @@
 //require('math.js')
 
 function renderQuestions(answers) {
-    var $target = $("#questions").empty(),
+    var $pane = $("#quiz-long"),
+        $target = $("#questions").empty(),
         $controls = $("#questions-controls").empty();
     var tplSection = $("#template-section").html();
     var tplQuestion = $("#template-question").html();
@@ -25,23 +26,25 @@ function renderQuestions(answers) {
         }
     }
     
-    $('.answer-slider').slider({
+    $('.answer-slider', $pane).slider({
         formatter: function(value) {
             return answerDesc[value];
         },
         reversed: true
     });
-    $(".answer-slider").on('change', function(e) {
+    $(".answer-slider", $pane).on('change', function(e) {
         updatePartyMatchesAsSelected();
     });
     $controls.append($(Mustache.render(tplControls, {nQuestions: nQuestions})));
     $("#keep-questions-sorted").on('click', function() {
         setTimeout($.proxy(function() {
-            var sorted = $(this).hasClass('active');
+            var sorted = $(this).hasClass('active'),
+                questions = $("#questions .question"),
+                sectionTitles = $("#questions .section").remove();
             if (sorted) {
-                orderQuestionsByDataKey('entropy', true);
+                orderItemsByDataKey(questions, 'entropy', true);
             } else {
-                orderQuestionsByDataKey('question-id');
+                orderItemsByDataKey(questions, 'question-id');
             }
             limitQuestionsAsSelected();
         }, this), 0);
@@ -49,7 +52,7 @@ function renderQuestions(answers) {
     $('#questions-limit').slider();
     $("#questions-limit").on('change', function(e) {
         limitQuestionsTo(e.value.newValue);
-    })
+    });
 }
 
 function renderParties($target) {
@@ -100,56 +103,42 @@ function calcPartyMatchesDistanceBased(userScores) {
 }
 
 function updatePartyMatches(userScores) {
+    var $pane = $("#quiz-long");
     var matches = calcPartyMatchesAngleBased(userScores);
     //var matches = calcPartyMatchesDistanceBased(userScores);
-    $(".party-score").each(function() {
+    $(".party-score", $pane).each(function() {
         var elem = $(this), id = elem.data('party-id'),
             val = Math.round(matches[id].score), percent = val+'%';
         elem.data('aria-valuenow', val).css({width: percent}).text(percent);
+        elem.closest(".party-match").data('matching', val);
     });
-    if ($("#keep-parties-sorted").is(".active")) {
-        orderPartiesByMatching(matches);
+    if ($(".keep-parties-sorted", $pane).is(".active")) {
+        orderItemsByDataKey($(".party-match", $pane), 'matching', true);
     }
 }
 
 function updatePartyMatchesAsSelected() {
-    updatePartyMatches(getUserScores());
+    updatePartyMatches(getUserScoresComplete());
 }
 
-function getUserScores() {
-    return $(".answer-slider").sort(function(a, b) {
+function getUserScoresComplete() {
+    return $("#quiz-long .answer-slider").sort(function(a, b) {
         return +$(a).data('question-id') - +$(b).data('question-id');
     }).map(function() {
         return $(this).data('slider').getValue();
     });
 }
 
-function orderPartiesByMatching(matches) {
-    var ordered = matches.slice(), $box = $("#results");
-    ordered.sort(function(a, b) {
-        return +(a.score > b.score) || +(a.score === b.score) - 1;
-    });
-    for (var i = 0; i < ordered.length; i++) {
-        var p = ordered[i];
-        $(".party-match[data-party-id="+p.id+"]").detach().prependTo($box);
-    }
-}
-
-function orderPartiesById() {
-    for (var i = 0; i < partyNames.length; i++) {
-        $(".party-match[data-party-id="+i+"]").detach().appendTo("#results");
-    }
-}
-
-function orderQuestionsByDataKey(key, reverse) {
+function orderItemsByDataKey(items, key, reverse) {
+    if (items.length < 1) return;
     var cmp = function(a, b) {
         var order = +$(a).data(key) - +$(b).data(key);
         return reverse ? -order : order;
     };
-    $("#questions .section").remove();
-    var q = $("#questions .question").detach();
-    q.sort(cmp);
-    $("#questions").append(q);
+    var parent = items.first().parent();
+    var collection = items.detach();
+    collection.sort(cmp);
+    parent.append(collection);
 }
 
 function limitQuestionsTo(n) {
@@ -223,37 +212,41 @@ function drawSimilarityGraph(selectedSections) {
 
 $(function() {
     renderQuestions(neutralScores);
-    renderParties($("#results"));
+    renderParties($("#quiz-long .results"));
     $(".answer-slider:first").trigger('change');
     
     var updateResultsPaneWidth = function() {
-        $("#results-pane").css({width: $("#questions-pane").width()});
+        $(".results-pane").css({width: $("#questions-pane").width()});
     };
-    $("#results-pane").affix({
+    $("#quiz-long .results-pane").affix({
         offset: {
-            top: $("#results-pane").offset().top,
+            top: $("#quiz-long .results-pane").offset().top,
             bottom: $(document).height() - $("#similarity-section").offset().top + 40
         }
     }).on('affixed.bs.affix', updateResultsPaneWidth);
     $(window).on('resize', updateResultsPaneWidth);
     updateResultsPaneWidth();
     
-    $(".party-score-link").on('click', function() {
+    $("#quiz-long .party-score-link").on('click', function() {
         var id = $(this).data('party-id');
         var scores = partyScores[id];
         renderQuestions(scores);
         updatePartyMatches(scores);
         return false;
     });
-    $("#keep-parties-sorted").on('click', function() {
-        var elem = $(this);
+    $(".keep-parties-sorted").on('click', function() {
+        var elem = $(this), parties = elem.parent().find(".party-match");
         elem.toggleClass('active');
         if (!elem.hasClass('active')) {
-            orderPartiesById();
+            orderItemsByDataKey(parties, 'party-id');
         } else {
-            updatePartyMatchesAsSelected();
+            orderItemsByDataKey(parties, 'matching', true);
         }
     });
+    
+    renderParties($("#quiz-short .results"));
+    $("#quiz-short .party-score-link").on('click', false);
+    
     
     renderSimilarityToggles($("#similarity-toggles"));
     $("#similarity-toggles .btn").on('click', function() {
@@ -273,6 +266,5 @@ $(function() {
     $("#toggle-none").on("click", function() {
         $("#similarity-toggles .btn.active").click();
     });
-    
     drawSimilarityGraph();
 });

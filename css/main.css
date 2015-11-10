@@ -51,7 +51,7 @@ body {
         border: 1px solid #337ab7;
     }
 
-#questions, #results {
+#questions, .results {
     margin-top: 30px;
 }
     .question {
@@ -73,10 +73,10 @@ body {
     background: linear-gradient(to bottom, #85cdef 0%, #6cb6d9 100%)
 }
 
-#results-pane.affix {
+.results-pane.affix {
     top: 10px;
 }
-#results-pane.affix-bottom {
+.results-pane.affix-bottom {
     position: absolute;
 }
 @media (max-width: 992px) {
@@ -87,7 +87,7 @@ body {
      }
 }
 
-#results {}
+.results {}
     .party-match {
         margin: 10px 0;
     }
