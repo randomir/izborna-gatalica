@@ -43,6 +43,10 @@ body {
 .intro {
     font-size: 16px;
 }
+.hints {
+    padding: 15px 35px;
+    opacity: 0.8;
+}
 
 #quiz-section {
     margin-bottom: 20px;

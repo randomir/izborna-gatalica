@@ -84,12 +84,18 @@
         
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade in active" id="quiz-long">
-            <div class="col-md-12">
+            <div class="col-md-12 hints">
               <p>
                 <span class="label label-info">Potpunost</span>
                 Najtočniji rezultat dobivate odgovaranjem na svih 37 pitanja.
-                Ograničavanjem broja pitanja, pretpostavljaju se neutralni
-                odgovori na sva neodgovorena pitanja.
+                Relativni odnos postotaka bitniji je od apsolutnog iznosa.
+              </p>
+              <p>
+                <span class="label label-info">Uređenost</span>
+                Ograničavanjem broja pitanja (i eventualnim prioritiziranjem po
+                informacijskom doprinosu), pretpostavljaju se neutralni odgovori
+                na sva neodgovorena pitanja, pa se time gubi na rezoluciji
+                rezultata.
               </p>
               <p>
                 <span class="label label-info">Usporedba</span>
@@ -115,6 +121,15 @@
           </div>
           
           <div role="tabpanel" class="tab-pane fade" id="quiz-short">
+            <div class="col-md-12 hints">
+              <p>
+                <span class="label label-info">Statistika</span>
+                Za razliku od računanja sličnosti odgovora kod dugog kviza,
+                ovdje na temelju nekolicine vaših odgovora računamo vjerojatnost
+                odabira stranke iz simulacije ispunjavanja kviza slučajne,
+                uniformne populacije.
+              </p>
+            </div>
             <div class="col-md-6" id="selected-questions-pane">
               <h4>U kojoj mjeri se slažete sa sljedećim tvrdnjama?</h4>
               <div id="selected-questions" class="questions"></div>
