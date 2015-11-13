@@ -105,6 +105,10 @@ body {
         .party-score-link {}
         .party-score {}
 
+#n_samples {
+    font-weight: bold;
+}
+
 #similarity-graph {
     padding-top: 1em;
     width: 100%;

@@ -186,6 +186,7 @@ function updatePartyMatchesHeuristically(nodeId) {
     var n_samples = decisionTree.n_samples[nodeId],
         distribution = decisionTree.distribution[nodeId];
     updatePartyMatchesGeneric($("#quiz-short"), distribution);
+    $("#n_samples").text(n_samples);
 }
 
 function orderItemsByDataKey(items, key, reverse) {
