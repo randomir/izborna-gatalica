@@ -109,6 +109,12 @@ body {
     font-weight: bold;
 }
 
+#quiz-short .results .party-score-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+}
+
 #similarity-graph {
     padding-top: 1em;
     width: 100%;
