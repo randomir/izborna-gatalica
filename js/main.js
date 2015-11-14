@@ -313,6 +313,13 @@ $(function() {
     renderParties($("#quiz-short .results"));
     $("#quiz-short .party-score-link").on('click', false);
     
+    // enable hash nav for quiz tabs
+    $(".nav-pills a").on('shown.bs.tab', function(e) {
+        window.location.hash = e.target.hash;
+    });
+    var hash = document.location.hash;
+    if (hash) $(".nav-pills a[href="+hash+"]").tab('show');
+    
     // similarity graph
     renderSimilarityToggles($("#similarity-toggles"));
     $("#similarity-toggles .btn").on('click', function() {
